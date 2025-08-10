@@ -9,10 +9,10 @@ const Home = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const products = [
-    { id: 1, name: "k-pop demon hunter's cat", price: "₹129", image: "/1.png", category: "keychains" },
+    { id: 1, name: "k-pop demon hunter's cat", price: "₹119", image: "/1.png", category: "keychains" },
     { id: 2, name: "Satoru Gojo", price: "₹249", image: "/2.png", category: "keychains" },
-    { id: 3, name: "3 cute pins", price: "₹129", image: "/3.png", category: "pins" },
-    { id: 4, name: "angry pin", price: "₹99", image: "/4.png", category: "pins" },
+    { id: 3, name: "3 cute pins", price: "₹99", image: "/3.png", category: "pins" },
+    { id: 4, name: "angry pin", price: "₹79", image: "/4.png", category: "pins" },
     { id: 5, name: "classic heart", price: "₹69", image: "/heart.png", category: "earrings" },
     { id: 6, name: "bat cat", price: "₹59", image: "/cat.png", category: "earrings" },
     { id: 7, name: "forget me nots", price: "₹59", image: "/forgetmenots.png", category: "earrings" }
