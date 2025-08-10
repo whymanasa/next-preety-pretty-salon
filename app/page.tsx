@@ -2,13 +2,14 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import { FaInstagram } from 'react-icons/fa';
 
 const Home = () => {
   const [selectedCategory, setSelectedCategory] = useState('All Products');
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-  // Product data remains the same
   const products = [
-    { id: 1, name: "k-pop demon hunter's cat keychain", price: "₹129", image: "/1.png", category: "keychains" },
+    { id: 1, name: "k-pop demon hunter's cat", price: "₹129", image: "/1.png", category: "keychains" },
     { id: 2, name: "Satoru Gojo", price: "₹299", image: "/2.png", category: "keychains" },
     { id: 3, name: "3 cute pins", price: "₹99", image: "/3.png", category: "pins" },
     { id: 4, name: "angry pin", price: "₹99", image: "/4.png", category: "pins" },
@@ -19,79 +20,116 @@ const Home = () => {
 
   const categories = ["All Products", "keychains", "pins", "earrings"];
 
-  const filteredProducts = selectedCategory === 'All Products' 
-    ? products 
-    : products.filter(product => product.category === selectedCategory);
+  const filteredProducts =
+    selectedCategory === 'All Products'
+      ? products
+      : products.filter(product => product.category === selectedCategory);
 
-  const handleCategoryClick = (category: string) => {
-    setSelectedCategory(category);
+  const handleImageClick = (imageSrc: string) => {
+    setSelectedImage(imageSrc);
+  };
+
+  const closeModal = () => {
+    setSelectedImage(null);
   };
 
   return (
-    // Changed to <main> for better semantics and added a container for better spacing on larger screens
-    <main className="min-h-screen bg-white text-gray-800">
-      <div className="max-w-7xl mx-auto">
-        {/* Shop Header */}
-        <header className="text-center py-10 border-b border-gray-200">
-          <h1 className="text-4xl font-bold tracking-tight text-black">amithi.studio</h1>
+    <main className="min-h-screen bg-pink-50 text-gray-800 font-sans">
+      <div className="max-w-md mx-auto">
+        {/* Shop name */}
+        <header className="text-center py-6">
+          <Image
+            src="/pink_logo.png"
+            alt="amithi.studio Logo"
+            width={200}
+            height={80}
+            className="mx-auto h-16 w-auto"
+            priority
+          />
         </header>
 
-        {/* Filters and Product Grid Wrapper */}
-        <div className="px-4 sm:px-6 lg:px-8 py-8">
-          {/* Category Filters */}
-          <div className="mb-8">
-            <div className="flex space-x-3 overflow-x-auto pb-2">
-              {categories.map((category) => (
-                <button
-                  key={category}
-                  onClick={() => handleCategoryClick(category)}
-                  // Slightly enhanced button styling for better feedback
-                  className={`px-6 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black ${
-                    selectedCategory === category
-                      ? 'bg-black text-white shadow'
-                      : 'bg-gray-100 text-black border border-transparent hover:bg-gray-200'
-                  }`}
-                >
-                  {category}
-                </button>
-              ))}
-            </div>
-          </div>
+        {/* Category buttons */}
+        <div className="flex justify-center gap-2 mb-6 flex-wrap">
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => setSelectedCategory(category)}
+              className={`px-4 py-2 rounded-full text-sm font-medium shadow-sm transition-all duration-200 ${
+                selectedCategory === category
+                  ? 'bg-pink-500 text-white shadow-md'
+                  : 'bg-pink-100 text-pink-800 hover:bg-pink-200'
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
 
-          {/* Product Grid - UPDATED FOR RESPONSIVENESS */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-4 gap-y-6">
-            {filteredProducts.map((product) => (
-              // Added group class for hover effects and enhanced transitions
-              <div key={product.id} className="group relative bg-white rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-                {/* Product Image */}
-                <div className="aspect-square bg-gray-50 flex items-center justify-center overflow-hidden">
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    width={300} // Increased size for better quality
-                    height={300}
-                    // Added a subtle zoom effect on hover
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                  {/* Fallback can be handled via CSS or kept as is. This JS approach is fine. */}
-                </div>
-                
-                {/* Product Info */}
-                <div className="p-4 text-center">
-                  <h3 className="text-sm font-medium text-gray-800 mb-1">
-                    {product.name}
-                  </h3>
-                  <p className="text-base font-semibold text-gray-900">
-                    {product.price}
-                  </p>
-                </div>
+        {/* Product grid */}
+        <div className="grid grid-cols-2 gap-5">
+          {filteredProducts.map((product) => (
+            <div
+              key={product.id}
+              className="bg-white rounded-xl p-3 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all"
+            >
+              {/* Image */}
+              <div className="aspect-square overflow-hidden rounded-lg cursor-pointer" onClick={() => handleImageClick(product.image)}>
+                <Image
+                  src={product.image}
+                  alt={product.name}
+                  width={300}
+                  height={300}
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-200"
+                />
               </div>
-            ))}
-          </div>
+
+              {/* Info */}
+              <p className="mt-2 text-sm text-gray-700">{product.name}</p>
+              <p className="text-base font-bold text-pink-700">{product.price}</p>
+            </div>
+          ))}
         </div>
       </div>
+
+      {/* Image Modal */}
+      {selectedImage && (
+        <div 
+          className="fixed inset-0 bg-white bg-opacity-95 flex items-center justify-center z-50 p-4"
+          onClick={closeModal}
+        >
+          <div className="relative w-full h-full flex items-center justify-center">
+            <button
+              onClick={closeModal}
+              className="absolute top-6 right-6 text-gray-700 text-3xl hover:text-gray-900 z-10 bg-white bg-opacity-80 rounded-full w-12 h-12 flex items-center justify-center shadow-lg border border-gray-200"
+            >
+              ×
+            </button>
+            <Image
+              src={selectedImage}
+              alt="Enlarged product image"
+              width={1200}
+              height={1200}
+              className="max-w-[90vw] max-h-[90vh] object-contain rounded-lg shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
+        </div>
+      )}
+
+      <footer className="fixed bottom-0 left-0 w-full bg-black text-white text-center py-1">
+        <div className="flex items-center justify-center space-x-2">
+          <span className="text-md">dm to order </span>
+          <a href="https://www.instagram.com/preetyprettysalon?igsh=MzhjaWZhNWNvZTQ=" target="_blank" rel="noopener noreferrer" className="text-pink-500 hover:text-pink-300">
+            <FaInstagram size={24} />
+          </a>
+        </div>
+      </footer>
     </main>
   );
 };
 
 export default Home;
+
+
+
+
