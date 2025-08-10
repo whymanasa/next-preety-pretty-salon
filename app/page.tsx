@@ -10,8 +10,8 @@ const Home = () => {
 
   const products = [
     { id: 1, name: "k-pop demon hunter's cat", price: "₹129", image: "/1.png", category: "keychains" },
-    { id: 2, name: "Satoru Gojo", price: "₹299", image: "/2.png", category: "keychains" },
-    { id: 3, name: "3 cute pins", price: "₹99", image: "/3.png", category: "pins" },
+    { id: 2, name: "Satoru Gojo", price: "₹249", image: "/2.png", category: "keychains" },
+    { id: 3, name: "3 cute pins", price: "₹129", image: "/3.png", category: "pins" },
     { id: 4, name: "angry pin", price: "₹99", image: "/4.png", category: "pins" },
     { id: 5, name: "classic heart", price: "₹69", image: "/heart.png", category: "earrings" },
     { id: 6, name: "bat cat", price: "₹59", image: "/cat.png", category: "earrings" },
@@ -94,22 +94,34 @@ const Home = () => {
       {/* Image Modal */}
       {selectedImage && (
         <div 
-          className="fixed inset-0 bg-white bg-opacity-95 flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 bg-gradient-to-br from-pink-50 to-pink-100 flex items-center justify-center z-50 p-4"
           onClick={closeModal}
         >
-          <div className="relative w-full h-full flex items-center justify-center">
+          <div className="relative w-full h-full flex flex-col items-center justify-center">
             <button
               onClick={closeModal}
-              className="absolute top-6 right-6 text-gray-700 text-3xl hover:text-gray-900 z-10 bg-white bg-opacity-80 rounded-full w-12 h-12 flex items-center justify-center shadow-lg border border-gray-200"
+              className="absolute top-6 right-6 text-pink-700 text-3xl hover:text-pink-900 z-10 bg-white bg-opacity-90 rounded-full w-12 h-12 flex items-center justify-center shadow-lg border border-pink-200 hover:bg-pink-50 transition-colors"
             >
               ×
             </button>
+            
+            {/* Product Info */}
+            <div className="text-center mb-6 bg-white bg-opacity-80 rounded-2xl px-8 py-4 shadow-lg border border-pink-200">
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                {products.find(p => p.image === selectedImage)?.name}
+              </h2>
+              <p className="text-xl font-semibold text-pink-600">
+                {products.find(p => p.image === selectedImage)?.price}
+              </p>
+            </div>
+            
+            {/* Enlarged Image */}
             <Image
               src={selectedImage}
               alt="Enlarged product image"
               width={1200}
               height={1200}
-              className="max-w-[90vw] max-h-[90vh] object-contain rounded-lg shadow-2xl"
+              className="max-w-[85vw] max-h-[70vh] object-contain rounded-2xl shadow-2xl border-4 border-white"
               onClick={(e) => e.stopPropagation()}
             />
           </div>

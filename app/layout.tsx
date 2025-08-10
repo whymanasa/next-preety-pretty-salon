@@ -14,8 +14,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Crooked but with Care - Salon",
-  description: "Professional salon services with care and attention to detail",
+  title: "Preety Pretty Salon",
+  description: "Preety Pretty Salon",
+  icons: {
+    icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">&lt;3</text></svg>',
+  },
 };
 
 export default function RootLayout({
