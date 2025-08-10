@@ -1,103 +1,97 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import { useState } from 'react';
+import Image from 'next/image';
+
+const Home = () => {
+  const [selectedCategory, setSelectedCategory] = useState('All Products');
+
+  // Product data remains the same
+  const products = [
+    { id: 1, name: "k-pop demon hunter's cat keychain", price: "₹129", image: "/1.png", category: "keychains" },
+    { id: 2, name: "Satoru Gojo", price: "₹299", image: "/2.png", category: "keychains" },
+    { id: 3, name: "3 cute pins", price: "₹99", image: "/3.png", category: "pins" },
+    { id: 4, name: "angry pin", price: "₹99", image: "/4.png", category: "pins" },
+    { id: 5, name: "classic heart", price: "₹69", image: "/heart.png", category: "earrings" },
+    { id: 6, name: "bat cat", price: "₹59", image: "/cat.png", category: "earrings" },
+    { id: 7, name: "forget me nots", price: "₹59", image: "/forgetmenots.png", category: "earrings" }
+  ];
+
+  const categories = ["All Products", "keychains", "pins", "earrings"];
+
+  const filteredProducts = selectedCategory === 'All Products' 
+    ? products 
+    : products.filter(product => product.category === selectedCategory);
+
+  const handleCategoryClick = (category: string) => {
+    setSelectedCategory(category);
+  };
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    // Changed to <main> for better semantics and added a container for better spacing on larger screens
+    <main className="min-h-screen bg-white text-gray-800">
+      <div className="max-w-7xl mx-auto">
+        {/* Shop Header */}
+        <header className="text-center py-10 border-b border-gray-200">
+          <h1 className="text-4xl font-bold tracking-tight text-black">amithi.studio</h1>
+        </header>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+        {/* Filters and Product Grid Wrapper */}
+        <div className="px-4 sm:px-6 lg:px-8 py-8">
+          {/* Category Filters */}
+          <div className="mb-8">
+            <div className="flex space-x-3 overflow-x-auto pb-2">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => handleCategoryClick(category)}
+                  // Slightly enhanced button styling for better feedback
+                  className={`px-6 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black ${
+                    selectedCategory === category
+                      ? 'bg-black text-white shadow'
+                      : 'bg-gray-100 text-black border border-transparent hover:bg-gray-200'
+                  }`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Product Grid - UPDATED FOR RESPONSIVENESS */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-4 gap-y-6">
+            {filteredProducts.map((product) => (
+              // Added group class for hover effects and enhanced transitions
+              <div key={product.id} className="group relative bg-white rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                {/* Product Image */}
+                <div className="aspect-square bg-gray-50 flex items-center justify-center overflow-hidden">
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    width={300} // Increased size for better quality
+                    height={300}
+                    // Added a subtle zoom effect on hover
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                  {/* Fallback can be handled via CSS or kept as is. This JS approach is fine. */}
+                </div>
+                
+                {/* Product Info */}
+                <div className="p-4 text-center">
+                  <h3 className="text-sm font-medium text-gray-800 mb-1">
+                    {product.name}
+                  </h3>
+                  <p className="text-base font-semibold text-gray-900">
+                    {product.price}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </div>
+    </main>
   );
-}
+};
+
+export default Home;
